@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Passenger;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Flight extends Model
 {
@@ -15,4 +16,8 @@ class Flight extends Model
         'departure_time',
         'arrival_time',
     ];
+    public function passengers()
+    {
+        return $this->belongsToMany(Passenger::class);
+    }
 }
