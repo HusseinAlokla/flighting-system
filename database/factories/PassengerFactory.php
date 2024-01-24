@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class PassengerFactory extends Factory
 {
-    protected $model = Passenger::class;
+
 
     public function definition()
     {
