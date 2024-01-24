@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Flight extends Model
 {
     use HasFactory;
-    protected $fillable = [
+    protected $guarded = [
         'number',
         'departure_city',
         'arrival_city',
@@ -18,6 +18,6 @@ class Flight extends Model
     ];
     public function passengers()
     {
-        return $this->belongsToMany(Passenger::class);
+        return $this->hasMany(Passenger::class);
     }
 }

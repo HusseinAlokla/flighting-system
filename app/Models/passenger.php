@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class passenger extends Model
 {
     use HasFactory;
-    protected $fillable = [
+    protected $guarded = [
         'FirstName',
         'LastName',
         'email',
@@ -17,8 +17,10 @@ class passenger extends Model
         'DOB',
         'passport_expiry_date'
     ];
-    public function flights()
+    // Passenger model
+    public function flight()
     {
-        return $this->belongsToMany(Flight::class);
+        return $this->belongsTo(Flight::class);
     }
+
 }
