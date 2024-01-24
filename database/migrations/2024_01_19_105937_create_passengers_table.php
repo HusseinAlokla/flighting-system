@@ -17,6 +17,7 @@ class CreatePassengersTable extends Migration
             $table->string('password');
             $table->date('DOB');
             $table->date('passport_expiry_date');
+            $table->softDeletes();
             $table->unsignedBigInteger('flight_id');
             $table->foreign('flight_id')->references('id')->on('flights')->onDelete('cascade');
             $table->timestamps();
@@ -27,17 +28,6 @@ class CreatePassengersTable extends Migration
     {
         Schema::dropIfExists('passengers');
     }
-    public function softDelete(): void
-    {
-        Schema::table('passegers', function (Blueprint $table) {
-            $table->softDeletes();
-        });
-    }
-    public function dropSoftDelte(): void
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
-    }
+
 }
 

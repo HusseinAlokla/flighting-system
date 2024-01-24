@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Flight extends Model
 {
     use HasFactory;
+
     protected $guarded = [
         'number',
         'departure_city',
