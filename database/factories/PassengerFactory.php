@@ -20,6 +20,7 @@ class PassengerFactory extends Factory
             'password' => Hash::make('password123'), // Hash the password
             'DOB' => $this->faker->date,
             'passport_expiry_date' => $this->faker->date,
+            'flight_id' => $this->faker->numberBetween(1, 50)
         ];
     }
 }

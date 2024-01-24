@@ -18,8 +18,11 @@ class CreatePassengersTable extends Migration
             $table->date('DOB');
             $table->date('passport_expiry_date');
             $table->softDeletes();
-            $table->unsignedBigInteger('flight_id');
-            $table->foreign('flight_id')->references('id')->on('flights')->onDelete('cascade');
+            $table->unsignedBigInteger('flight_id')->default(0);
+            $table->foreign('flight_id')
+                ->references('id')->on('flights')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }
