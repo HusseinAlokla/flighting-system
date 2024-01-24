@@ -10,13 +10,7 @@ class Flight extends Model
 {
     use HasFactory;
 
-    protected $guarded = [
-        'number',
-        'departure_city',
-        'arrival_city',
-        'departure_time',
-        'arrival_time',
-    ];
+    protected $guarded = [];
     public function passengers()
     {
         return $this->hasMany(Passenger::class);

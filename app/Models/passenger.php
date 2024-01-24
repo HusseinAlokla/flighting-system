@@ -11,14 +11,7 @@ class passenger extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $guarded = [
-        'FirstName',
-        'LastName',
-        'email',
-        'password',
-        'DOB',
-        'passport_expiry_date'
-    ];
+    protected $guarded = [];
     // Passenger model
     public function flight()
     {
