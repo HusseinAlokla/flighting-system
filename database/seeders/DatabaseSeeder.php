@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Flight::factory(50)->create();
-        Passenger::factory(1000)->create();
+        $this->call(FlightsTableSeeder::class);
+        $this->call(PassengersTableSeeder::class);
+        ;
     }
 }
