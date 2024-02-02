@@ -41,4 +41,11 @@ class FlightController extends Controller
 
         return response()->json(['status' => 200, 'flights' => $flights], 200);
     }
+    public function passengersByFlight(Request $request, Flight $flight)
+    {
+        // Retrieve passengers belonging to the requested flight
+        $passengers = $flight->passengers()->get();
+
+        return response()->json(['passengers' => $passengers], 200);
+    }
 }
