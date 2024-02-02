@@ -23,19 +23,7 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-        // $query = User::all();
-        // if ($query->count() > 0) {
-        //     return response()->json([
-        //         'status' => 200,
-        //         'users' => $query
-        //     ], 200);
 
-        // } else {
-        //     return response()->json([
-        //         'status' => 404,
-        //         'users' => 'No records found'
-        //     ], 404);
-        // }
 
 
 
@@ -71,8 +59,18 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // Store a new user
-        User::create($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
+            // Add more validation rules as needed
+        ]);
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
         return redirect()->route('users.index');
     }
 
@@ -83,18 +81,22 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
         // Show form to edit a user
-        $user = User::findOrFail($id);
         return view('users.edit', compact('user'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        // Update a user
-        $user = User::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            // Add more validation rules as needed
+        ]);
+
         $user->update($request->all());
+
         return redirect()->route('users.index');
     }
 
@@ -105,6 +107,8 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index');
     }
+
+
 
 
 

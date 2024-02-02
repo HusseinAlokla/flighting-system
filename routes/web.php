@@ -22,3 +22,14 @@ use App\Http\Controllers\UserController;
 
 Route::get('/delete-user/{userId}', [UserController::class, 'deleteUser']);
 Route::resource('users', UserController::class);
+
+// Add User
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+
+// Update User
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+
+// Delete User
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
