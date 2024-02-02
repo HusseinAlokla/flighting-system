@@ -21,4 +21,4 @@ Route::get('/', function () {
 use App\Http\Controllers\UserController;
 
 Route::get('/delete-user/{userId}', [UserController::class, 'deleteUser']);
-
+Route::resource('users', UserController::class);

@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Flight;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -62,5 +63,49 @@ class UserController extends Controller
 
         return response()->json(['status' => 200, 'users' => $users], 200);
     }
+    public function create()
+    {
+        // Show form to create a new user
+        return view('users.create');
+    }
+
+    public function store(Request $request)
+    {
+        // Store a new user
+        User::create($request->all());
+        return redirect()->route('users.index');
+    }
+
+    public function show($id)
+    {
+        // Show a specific user
+        $user = User::findOrFail($id);
+        return view('users.show', compact('user'));
+    }
+
+    public function edit($id)
+    {
+        // Show form to edit a user
+        $user = User::findOrFail($id);
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Update a user
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return redirect()->route('users.index');
+    }
+
+    public function destroy($id)
+    {
+        // Delete a user
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->route('users.index');
+    }
+
+
 
 }
