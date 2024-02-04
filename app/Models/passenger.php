@@ -12,7 +12,7 @@ class passenger extends Model
     use HasFactory;
     use SoftDeletes;
     protected $guarded = [];
-    // Passenger model
+
     public function flight()
     {
         return $this->belongsToMany(Flight::class);
