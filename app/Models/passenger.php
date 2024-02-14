@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class passenger extends Model
+class Passenger extends Model
 {
     use HasFactory;
     use SoftDeletes;
