@@ -44,11 +44,10 @@ class UserController extends Controller
         //return redirect()->route('users.index');
     }
 
-    public function show($id)
+    public function show(User $user)
     {
 
-        $user = User::findOrFail($id);
-        //return view('users.show', compact('user'));
+       
         return response(['success' => true, 'data' => $users]);
     }
 
@@ -72,10 +71,10 @@ class UserController extends Controller
         return response(['success' => true, 'data' => $users]);
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
 
-        $user = User::findOrFail($id);
+        
         $user->delete();
         return response(['success' => true, 'data' => $users]);
     }
