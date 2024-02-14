@@ -32,32 +32,31 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
 
         ]);
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
-        return redirect()->route('users.index');
+        $user = User::create($data);
+        return response(['success' => true, 'data' => $users]);
+        //return redirect()->route('users.index');
     }
 
     public function show($id)
     {
 
         $user = User::findOrFail($id);
-        return view('users.show', compact('user'));
+        //return view('users.show', compact('user'));
+        return response(['success' => true, 'data' => $users]);
     }
 
     public function edit(User $user)
     {
 
-        return view('users.edit', compact('user'));
+        //return view('users.edit', compact('user'));
+        return response(['success' => true, 'data' => $users]);
     }
 
     public function update(Request $request, User $user)
@@ -70,7 +69,7 @@ class UserController extends Controller
 
         $user->update($request->all());
 
-        return redirect()->route('users.index');
+        return response(['success' => true, 'data' => $users]);
     }
 
     public function destroy($id)
@@ -78,7 +77,7 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $user->delete();
-        return (['data' => $user, Response::HTTP_NO_CONTENT]);
+        return response(['success' => true, 'data' => $users]);
     }
 
 
