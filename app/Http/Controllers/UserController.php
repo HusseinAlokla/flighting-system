@@ -2,12 +2,15 @@
 
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
 use App\Models\Flight;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -30,20 +33,43 @@ class UserController extends Controller
         return view('users.create');
     }
 
+    // public function store(Request $request)
+    // {
+    //     $data = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|email|unique:users,email',
+    //         'password' => 'required|min:8',
+
+    //     ]);
+
+    //     $user = User::create($data);
+    //     return response(['success' => true, 'data' => $user]);
+    //     //return redirect()->route('users.index');
+    // }
+    
     public function store(Request $request)
     {
-        $data = $request->validate([
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
-
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
         ]);
 
-        $user = User::create($data);
-        return response(['success' => true, 'data' => $user]);
-        //return redirect()->route('users.index');
-    }
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
 
+        // Create and save the user
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // Hash the password for security
+        ]);
+
+        // Optionally, return the created user data or a success message
+        return response()->json(['user' => $user], 201);
+    }
     public function show(User $user)
     {
 
@@ -77,9 +103,11 @@ class UserController extends Controller
         $user->delete();
         return response(['success' => true, 'data' => $user]);
     }
-
-
-
-
-
 }
+   
+
+
+
+
+
+
