@@ -40,7 +40,7 @@ class UserController extends Controller
         ]);
 
         $user = User::create($data);
-        return response(['success' => true, 'data' => $users]);
+        return response(['success' => true, 'data' => $user]);
         //return redirect()->route('users.index');
     }
 
@@ -48,14 +48,14 @@ class UserController extends Controller
     {
 
        
-        return response(['success' => true, 'data' => $users]);
+        return response(['success' => true, 'data' => $user]);
     }
 
     public function edit(User $user)
     {
 
-        //return view('users.edit', compact('user'));
-        return response(['success' => true, 'data' => $users]);
+
+        return response(['success' => true, 'data' => $user]);
     }
 
     public function update(Request $request, User $user)
@@ -68,15 +68,14 @@ class UserController extends Controller
 
         $user->update($request->all());
 
-        return response(['success' => true, 'data' => $users]);
+        return response(['success' => true, 'data' => $user]);
     }
 
     public function destroy(User $user)
     {
 
-        
         $user->delete();
-        return response(['success' => true, 'data' => $users]);
+        return response(['success' => true, 'data' => $user]);
     }
 
 
