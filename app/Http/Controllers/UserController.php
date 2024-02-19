@@ -27,11 +27,7 @@ class UserController extends Controller
 
         return response()->json(['success' => true, 'data' => $users]);
     }
-    public function create()
-    {
 
-        return view('users.create');
-    }
 
     // public function store(Request $request)
     // {
@@ -47,7 +43,7 @@ class UserController extends Controller
     //     //return redirect()->route('users.index');
     // }
     
-    public function store(Request $request)
+    public function create(Request $request)
     {
         // Validate the request data
         $validator = Validator::make($request->all(), [
@@ -77,12 +73,7 @@ class UserController extends Controller
         return response(['success' => true, 'data' => $user]);
     }
 
-    public function edit(User $user)
-    {
-
-
-        return response(['success' => true, 'data' => $user]);
-    }
+   
 
     public function update(Request $request, User $user)
     {

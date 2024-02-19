@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call(FlightsTableSeeder::class);
         $this->call(PassengersTableSeeder::class);
-        ;
+        $this->call(RolesAndPermissionsSeeder::class);
+
     }
 }
