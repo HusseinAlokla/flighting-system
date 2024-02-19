@@ -29,7 +29,7 @@ Route::get('flights', [FlightController::class, 'index']);
 
 Route::get('flights/{flight}/passengers', [FlightController::class, 'passengersByFlight']);
 
-
+Route::create('/users', [UserController::class, 'store']);
 
 
 // Registration and Login
