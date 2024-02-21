@@ -22,30 +22,14 @@ class UserController extends Controller
             ->allowedSorts('name')
             ->orderBy($request->input('sort_by', 'name'), $request->input('sort_order', 'asc'))
             ->paginate($request->input('per_page', 10));
-
-
-
-        return response()->json(['success' => true, 'data' => $users]);
+             return response()->json(['success' => true, 'data' => $users]);
     }
 
 
-    // public function store(Request $request)
-    // {
-    //     $data = $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'email' => 'required|email|unique:users,email',
-    //         'password' => 'required|min:8',
-
-    //     ]);
-
-    //     $user = User::create($data);
-    //     return response(['success' => true, 'data' => $user]);
-    //     //return redirect()->route('users.index');
-    // }
     
     public function create(Request $request)
     {
-        // Validate the request data
+        
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -56,24 +40,14 @@ class UserController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        // Create and save the user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password), // Hash the password for security
+            'password' => Hash::make($request->password),
         ]);
 
-        // Optionally, return the created user data or a success message
         return response()->json(['user' => $user], 201);
     }
-    public function show(User $user)
-    {
-
-       
-        return response(['success' => true, 'data' => $user]);
-    }
-
-   
 
     public function update(Request $request, User $user)
     {
