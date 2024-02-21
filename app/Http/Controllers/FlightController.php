@@ -10,29 +10,56 @@ use Spatie\QueryBuilder\QueryBuilder;
 class FlightController extends Controller
 {
 
-    public function index(Request $request)
-    {
-        $flights = QueryBuilder::for(Flight::class)
-            ->allowedFilters(['departure_airport', 'arrival_airport', 'flight_number'])
-            ->allowedSorts(['departure_airport', 'arrival_airport', 'flight_number'])
-            ->defaultSort('departure_airport')
-            ->orderBy($request->input('sort_by', 'departure_airport'), $request->input('sort_order', 'asc')) // Sort by request parameters
-            ->paginate($request->input('per_page', 10));
+    
+public function index(Request $request)
+{
+    $flights = QueryBuilder::for(Flight::class)
+        ->allowedFilters(['departure_airport', 'arrival_airport', 'flight_number'])
+        ->allowedSorts(['departure_airport', 'arrival_airport', 'flight_number'])
+        ->allowedIncludes(['passengers']) 
+        ->orderBy($request->input('sort_by', 'departure_airport'), $request->input('sort_order', 'asc'))
+        ->paginate($request->input('per_page', 10));
 
-        return $flights;
-    }
-
-
-
-
-    public function passengersByFlight(Request $request, Flight $flight)
-    {
-        $passengers = QueryBuilder::for($flight->passengers()->getQuery())
-            ->allowedFilters('first_name', 'last_name', 'email')
-            ->allowedSorts('first_name', 'last_name', 'email')
-            ->paginate($request->input('per_page', 10));
-
-        return response()->json(['passengers' => $passengers], 200);
-    }
-
+    return response()->json(['success' => true, 'data' => $flights]);
 }
+
+    public function create(Request $request)
+{   
+    $validatedData = $request->validate([
+        'departure_airport' => 'required|string|max:255',
+        'arrival_airport' => 'required|string|max:255',
+        'flight_number' => 'required|string|max:255',
+    ]);
+
+    $flight = Flight::create($validatedData);
+    return response()->json(['flight' => $user], 201);; // 201 Created
+}
+public function show(Flight $flight)
+{
+    return response()->json($flight );
+}
+public function update(Request $request, Flight $flight)
+{
+    $validatedData = $request->validate([
+        'departure_airport' => 'string|max:255',
+        'arrival_airport' => 'string|max:255',
+        'flight_number' => 'string|max:255',
+      
+    ]);
+
+    $flight->update($validatedData);
+    return response(['success' => true, 'data' => $flight]);
+    
+}
+public function destroy(Flight $flight)
+{
+
+    $flight->delete();
+    return response(['success' => true, 'data' => $flight]);
+}
+}
+
+
+
+
+
