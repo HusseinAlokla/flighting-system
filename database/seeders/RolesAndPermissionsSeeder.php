@@ -14,20 +14,20 @@ class RolesAndPermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()['cache']->forget('spatie.permission.cache');
 
-        // Create permissions
-        Permission::create(['name' => 'manage users']);
-        Permission::create(['name' => 'view users']);
-        Permission::create(['name' => 'manage flights']);
-        Permission::create(['name' => 'view flights']);
-        Permission::create(['name' => 'view passengers']);
+            // Create roles
+            $adminRole = Role::create(['name' => 'admin']);
+            $userRole = Role::create(['name' => 'user']);
 
-        // Create roles and assign existing permissions
-        $adminRole = Role::create(['name' => 'admin']);
-        $adminRole->givePermissionTo(Permission::all());
+            // Create permissions
+            $viewUsersPermission = Permission::create(['name' => 'view users']);
+            $manageUsersPermission = Permission::create(['name' => 'manage users']);
+            $viewFlightsPermission = Permission::create(['name' => 'view flights']);
+            $manageFlightsPermission = Permission::create(['name' => 'manage flights']);
 
-        $userRole = Role::create(['name' => 'user']);
-        $userRole->givePermissionTo(['view flights', 'view passengers']);
+            // Assign permissions to roles
+            $adminRole->givePermissionTo($manageUsersPermission, $manageFlightsPermission);
+            $userRole->givePermissionTo($viewUsersPermission, $viewFlightsPermission);
 
-        // A guest role if I want
-    }
+        
+}
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Passenger;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\QueryBuilder;x
 
 class PassengerController extends Controller
 {

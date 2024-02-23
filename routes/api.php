@@ -14,18 +14,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 //CRUD for user
-Route::apiResource('users', UserController::class);
+//Route::apiResource('users', UserController::class);
 
 //CRUD for flights
-Route::apiResource('flights', FlightController::class);
+//Route::apiResource('flights', FlightController::class);
+Route::group(['middleware' => ['role:admin']], function () {
+    Route::apiResource('users', UserController::class);
+    // Any other admin routes
+});
 
-
-
-
-
-
-
-
+Route::group(['middleware' => ['permission:manage flights']], function () {
+    Route::apiResource('flights', FlightController::class);
+    // Routes requiring "manage flights" permission
+});
 
 
 Route::post('/login', [AuthController::class, 'login']);
