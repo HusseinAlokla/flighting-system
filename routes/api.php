@@ -9,31 +9,29 @@ use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use App\Http\Controllers\AuthController;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
 
-});
-//CRUD for user
-//Route::apiResource('users', UserController::class);
+    // Publicly accessible routes
+    Route::post('/login', [AuthController::class, 'login']);
 
-//CRUD for flights
-//Route::apiResource('flights', FlightController::class);
-Route::group(['middleware' => ['role:admin']], function () {
-    Route::apiResource('users', UserController::class);
-    // Any other admin routes
-});
+    // Protected routes accessible only by authenticated users
+    Route::middleware('auth:sanctum')->group(function () {
+        // Get authenticated user's information
+        Route::get('/user', function (Request $request) {
+            return $request->user();
+        });
 
-Route::group(['middleware' => ['permission:manage flights']], function () {
-    Route::apiResource('flights', FlightController::class);
-    // Routes requiring "manage flights" permission
-});
+        // Logout route
+        Route::post('/logout', [AuthController::class, 'logout']);
 
+        // Routes accessible by users with 'admin' role
+        Route::group(['middleware' => ['role:admin']], function () {
+            Route::apiResource('users', UserController::class);
+           
+        });
 
-Route::post('/login', [AuthController::class, 'login']);
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// Logout
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+        // Routes requiring "manage flights" permission
+        Route::group(['middleware' => ['permission:manage flights']], function () {
+            Route::apiResource('flights', FlightController::class);
+            // Any other routes requiring this permission
+        });
+    });
