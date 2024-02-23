@@ -3,20 +3,25 @@
 namespace App\Http\Controllers;
 use App\Models\Passenger;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\QueryBuilder;x
+use Spatie\QueryBuilder\QueryBuilder;
 
 class PassengerController extends Controller
 {
-    public function index(Request $request)
-    {
-        $passengers = QueryBuilder::for(Passenger::class)
-            ->allowedFilters(['FirstName', 'LastName', 'email', 'DOB', 'passport_expiry_date', 'flight_id'])
-            ->allowedSorts(['FirstName', 'LastName', 'email', 'DOB', 'passport_expiry_date', 'flight_id'])
-            ->paginate($request->input('per_page', 10));
+    public function index(Request $request){
+    $passengers = QueryBuilder::for(Passenger::class)
+        ->with('flights') // Ensure flights are eager loaded
+        ->whereHas('flights', function ($query) use ($request) {
+            // Example conditional filter on the flights relationship
+            if ($request->has('flightName')) {
+                $query->where('name', $request->input('flightName'));
+            }
+        })
+        ->allowedFilters(['FirstName', 'LastName', 'email', 'DOB', 'passport_expiry_date'])
+        ->allowedSorts(['FirstName', 'LastName', 'email', 'DOB', 'passport_expiry_date'])
+        ->paginate($request->input('per_page', 10));
 
-        return response()->json(['success' => true, 'data' => $passengers]);
+    return response(['success' => true, 'data' => $passengers]);
     }
-
     public function create(Request $request)
     {
         $validatedData = $request->validate([
@@ -26,7 +31,7 @@ class PassengerController extends Controller
             'password' => 'required|string|min:8',
             'DOB' => 'required|date',
             'passport_expiry_date' => 'required|date',
-            'flight_id' => 'nullable|exists:flights,id',
+            
         ]);
 
         $validatedData['password'] = bcrypt($validatedData['password']);

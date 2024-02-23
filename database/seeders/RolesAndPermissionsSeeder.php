@@ -28,6 +28,16 @@ class RolesAndPermissionsSeeder extends Seeder
             $adminRole->givePermissionTo($manageUsersPermission, $manageFlightsPermission);
             $userRole->givePermissionTo($viewUsersPermission, $viewFlightsPermission);
 
+                
+
+            Permission::create(['name' => 'create model units']);
+            Permission::create(['name' => 'edit model units']);
+            Permission::create(['name' => 'delete model units']);
+            $adminRole = Role::findByName('admin');
+            $adminRole->givePermissionTo('create model units');
+            $adminRole->givePermissionTo('edit model units');
+            $adminRole->givePermissionTo('delete model units');
+
         
 }
 }

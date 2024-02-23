@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ModelUnitController;
 
 
     // Publicly accessible routes
@@ -34,4 +35,8 @@ use App\Http\Controllers\AuthController;
             Route::apiResource('flights', FlightController::class);
             // Any other routes requiring this permission
         });
+    });
+
+    Route::middleware(['role:admin'])->group(function () {
+        Route::apiResource('model-units', ModelUnitController::class);
     });

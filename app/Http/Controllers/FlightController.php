@@ -20,7 +20,7 @@ public function index(Request $request)
         ->orderBy($request->input('sort_by', 'departure_airport'), $request->input('sort_order', 'asc'))
         ->paginate($request->input('per_page', 10));
 
-    return response()->json(['success' => true, 'data' => $flights]);
+    return response(['success' => true, 'data' => $flights]);
 }
 
     public function create(Request $request)
@@ -32,11 +32,11 @@ public function index(Request $request)
     ]);
 
     $flight = Flight::create($validatedData);
-    return response()->json(['flight' => $user], 201);; // 201 Created
+    return response()->json(['flight' => $user], 201);
 }
 public function show(Flight $flight)
 {
-    return response()->json($flight );
+    return response($flight);
 }
 public function update(Request $request, Flight $flight)
 {
