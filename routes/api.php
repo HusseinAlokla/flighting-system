@@ -23,7 +23,7 @@ use App\Http\Controllers\ModelUnitController;
 
         // Logout route
         Route::post('/logout', [AuthController::class, 'logout']);
-
+        
         // Routes accessible by users with 'admin' role
         Route::group(['middleware' => ['role:admin']], function () {
             Route::apiResource('users', UserController::class);

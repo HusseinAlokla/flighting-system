@@ -9,7 +9,7 @@ class PassengerController extends Controller
 {
     public function index(Request $request){
     $passengers = QueryBuilder::for(Passenger::class)
-        ->with('flights') // Ensure flights are eager loaded
+        ->with('flights') 
         ->whereHas('flights', function ($query) use ($request) {
             // Example conditional filter on the flights relationship
             if ($request->has('flightName')) {

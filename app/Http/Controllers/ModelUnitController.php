@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\ModelUnit;
 class ModelUnitController extends Controller
 {
     public function store(Request $request)
@@ -40,7 +40,7 @@ class ModelUnitController extends Controller
     {
         $this->authorize('delete model unit');
 
-        $modelUnit = ModelUnit::findOrFail($id); // Find the model unit by ID or fail
+        $modelUnit = ModelUnit::findOrFail($id); 
 
         $modelUnit->delete();
 

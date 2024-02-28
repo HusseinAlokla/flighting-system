@@ -19,7 +19,6 @@ class CreatePassengersTable extends Migration
             $table->date('passport_expiry_date');
             $table->softDeletes();
 
-            $table->foreignId('flight_id')->nullable()->constrained('flights')->onDelete('cascade');
             $table->timestamps();
         });
     }
