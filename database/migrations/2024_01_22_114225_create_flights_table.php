@@ -15,6 +15,7 @@ class CreateFlightsTable extends Migration
             $table->string('arrival_city');
             $table->timestamp('departure_time')->default(now());
             $table->timestamp('arrival_time')->default(now());
+            $table->softDeletes();
             $table->timestamps();
         });
     }

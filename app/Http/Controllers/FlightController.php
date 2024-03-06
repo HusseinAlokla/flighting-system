@@ -14,10 +14,10 @@ class FlightController extends Controller
     public function index(Request $request)
     {
         $flights = QueryBuilder::for(Flight::class)
-            ->allowedFilters(['departure_airport', 'arrival_airport'])
-            ->allowedSorts(['departure_airport', 'arrival_airport'])
+            ->allowedFilters(['departure_city', 'arrival_city'])
+            ->allowedSorts(['departure_city', 'arrival_city'])
             ->allowedIncludes(['passengers']) 
-            ->orderBy($request->input('sort_by', 'departure_airport'), $request->input('sort_order', 'asc'))
+            ->orderBy($request->input('sort_by', 'departure_city'), $request->input('sort_order', 'asc'))
             ->paginate($request->input('per_page', 10));
 
         return response(['success' => true, 'data' => $flights]);
@@ -26,8 +26,8 @@ class FlightController extends Controller
         public function create(Request $request)
     {   
         $validatedData = $request->validate([
-            'departure_airport' => 'required|string|max:255',
-            'arrival_airport' => 'required|string|max:255',
+            'departure_city' => 'required|string|max:255',
+            'arrival_city' => 'required|string|max:255',
             'flight_number' => 'required|string|max:255',
         ]);
 
@@ -41,8 +41,8 @@ class FlightController extends Controller
     public function update(Request $request, Flight $flight)
     {
         $validatedData = $request->validate([
-            'departure_airport' => 'string|max:255',
-            'arrival_airport' => 'string|max:255',
+            'departure_city' => 'string|max:255',
+            'arrival_city' => 'string|max:255',
             'flight_number' => 'string|max:255',
         
         ]);
