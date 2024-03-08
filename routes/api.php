@@ -8,7 +8,7 @@
     use Illuminate\Validation\ValidationException;
     use App\Models\User;
     use App\Http\Controllers\AuthController;
-    use App\Http\Controllers\ModelUnitController;
+  
 
 
         // Publicly accessible routes
@@ -37,8 +37,5 @@
             });
         });
 
-        Route::middleware(['role:admin'])->group(function () {
-            Route::apiResource('model-units', ModelUnitController::class);
-        });
-
+       
        
