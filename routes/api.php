@@ -13,7 +13,7 @@
 
         // Publicly accessible routes
         Route::post('/login', [AuthController::class, 'login']);
-
+        Route::get('/users/export', [UserController::class, 'export']);
         // Protected routes accessible only by authenticated users
         Route::middleware('auth:sanctum')->group(function () {
             // Get authenticated user's information
@@ -35,7 +35,14 @@
                 Route::apiResource('flights', FlightController::class);
                 // Any other routes requiring this permission
             });
+
+            Route::middleware('throttle:60,1')->group(function () {
+            Route::get('/passenger', function (Request $request) {
+                return $request->passenger();
+            });
         });
+        });
+
 
        
        

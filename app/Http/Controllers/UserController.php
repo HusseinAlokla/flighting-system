@@ -11,6 +11,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
+
 
 class UserController extends Controller
 {
@@ -67,6 +70,12 @@ class UserController extends Controller
 
         $user->delete();
         return response(['success' => true, 'data' => $user]);
+    }
+
+    public function export() 
+    {
+        
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 }
    
