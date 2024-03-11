@@ -2,6 +2,7 @@
 
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\User;
@@ -25,31 +26,26 @@ class UserController extends Controller
             ->allowedSorts('name')
             ->orderBy($request->input('sort_by', 'name'), $request->input('sort_order', 'asc'))
             ->paginate($request->input('per_page', 10));
-             return response()->json(['success' => true, 'data' => $users]);
+        return response()->json(['success' => true, 'data' => $users]);
     }
 
 
-    
+
     public function store(Request $request)
     {
-        
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
         ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['user' => $user], 201);
+        return response(['success' => true, 'data' => $user]);    
     }
 
     public function update(Request $request, User $user)
@@ -72,13 +68,13 @@ class UserController extends Controller
         return response(['success' => true, 'data' => $user]);
     }
 
-    public function export() 
+    public function export()
     {
-        
+
         return Excel::download(new UsersExport, 'users.xlsx');
     }
 }
-   
+
 
 
 
