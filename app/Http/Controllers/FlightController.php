@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Flight;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\Filters\FiltersExact;
 use Spatie\QueryBuilder\QueryBuilder;
+
 class FlightController extends Controller
 {
-
 
     public function index(Request $request)
     {
         $flights = QueryBuilder::for(Flight::class)
-            ->allowedFilters(['departure_city', 'arrival_city'])
-            ->allowedSorts(['departure_city', 'arrival_city'])
-            ->allowedFilters(['passenger_id'])
+            ->allowedFilters([AllowedFilter::exact('id'), 'departure_city', 'arrival_city', AllowedFilter::exact('passengers.id')])
+            ->allowedSorts(['updated_at'])
             ->orderBy($request->input('sort_by', 'departure_city'), $request->input('sort_order', 'asc'))
             ->paginate($request->input('per_page', 10));
 
@@ -53,10 +55,7 @@ class FlightController extends Controller
     {
 
         $flight->delete();
-        return response()->json(['data' => $flight], 204);    }
+        return response(['data' => $flight], Response::HTTP_NO_CONTENT);
+
+    }
 }
-
-
-
-
-

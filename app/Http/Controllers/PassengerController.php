@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Passenger;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Support\Facades\Cache;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class PassengerController extends Controller
 {
@@ -16,13 +18,13 @@ class PassengerController extends Controller
 
         $passengers = Cache::remember($cacheKey, now()->addMinutes(60), function () use ($request) {
             return QueryBuilder::for(Passenger::class)
-                ->with('flights')
-                ->whereHas('flights', function ($query) use ($request) {
-                    if ($request->has('flightName')) {
-                        $query->where('name', $request->input('flightName'));
-                    }
-                })
-                ->allowedFilters(['FirstName', 'LastName', 'email', 'DOB', 'passport_expiry_date'])
+                // ->with('flights')
+                // ->whereHas('flights', function ($query) use ($request) {
+                //     if ($request->has('flightName')) {
+                //         $query->where('name', $request->input('flightName'));
+                //     }
+                // })
+                ->allowedFilters(['FirstName', 'LastName', 'email', 'DOB', 'passport_expiry_date', AllowedFilter::exact('flight.id')])
                 ->allowedSorts(['FirstName', 'LastName', 'email', 'DOB', 'passport_expiry_date'])
                 ->paginate($request->input('per_page', 10));
         });
@@ -46,12 +48,12 @@ class PassengerController extends Controller
 
         $passenger = Passenger::create($validatedData);
 
-        return response()->json($passenger, 201);
+        return response(['success' => true, 'data' => $passenger]);
     }
 
     public function show(Passenger $passenger)
     {
-        return response()->json($passenger);
+        return response(['success' => true, 'data' => $passenger]);
     }
 
 
@@ -71,13 +73,13 @@ class PassengerController extends Controller
         }
 
         $passenger->update($validatedData);
-        return response()->json($passenger);
+        return response(['success' => true, 'data' => $passenger]);
     }
 
     public function destroy(Passenger $passenger)
     {
         $passenger->delete();
-        return response(['success' => true, 'data' => $passenger]);
+        return response(['data' => $passenger], Response::HTTP_NO_CONTENT);
     }
 
 }

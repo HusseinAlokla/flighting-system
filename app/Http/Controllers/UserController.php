@@ -1,17 +1,12 @@
 <?php
-
-
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
-
 use App\Models\User;
-use App\Models\Flight;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
 
@@ -26,10 +21,13 @@ class UserController extends Controller
             ->allowedSorts('name')
             ->orderBy($request->input('sort_by', 'name'), $request->input('sort_order', 'asc'))
             ->paginate($request->input('per_page', 10));
-        return response()->json(['success' => true, 'data' => $users]);
+        return response(['success' => true, 'data' => $users]);
     }
 
-
+    public function show(User $user)
+    {
+        return response(['success' => true, 'data' => $user]);
+    }
 
     public function store(Request $request)
     {
@@ -45,7 +43,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response(['success' => true, 'data' => $user]);    
+        return response(['success' => true, 'data' => $user]);
     }
 
     public function update(Request $request, User $user)
@@ -65,19 +63,11 @@ class UserController extends Controller
     {
 
         $user->delete();
-        return response(['success' => true, 'data' => $user]);
+        return response(['data' => $user], Response::HTTP_NO_CONTENT);
     }
 
     public function export()
     {
-
         return Excel::download(new UsersExport, 'users.xlsx');
     }
 }
-
-
-
-
-
-
-
